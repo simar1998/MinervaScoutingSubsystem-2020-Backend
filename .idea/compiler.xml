@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Lembos2020-Backend" target="6" />
+      <module name="Lembos2020-Backend" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

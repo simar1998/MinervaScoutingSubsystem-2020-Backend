@@ -1,6 +1,7 @@
 package com.redalliance.main;
 
-import com.redalliance.main.db.HibernateThread;
+import com.redalliance.main.db.hibernate.HibernateThread;
+import com.redalliance.main.db.hibernate.HibernateThreadManager;
 import com.redalliance.main.db.subroutines.StateManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Simar Pal Kalsi
@@ -28,8 +28,7 @@ public class ApplicationServletContextListener implements ServletContextListener
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         logger.info("Application Servlet Context Listener initialized");
-        HibernateThread.initHibernateThread();
-        stateManager = new StateManager(15,0, TimeUnit.MINUTES);
+        HibernateThreadManager.initDBThread();
     }
 
     @Override

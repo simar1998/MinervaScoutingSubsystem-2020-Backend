@@ -11,7 +11,6 @@ import javax.persistence.*;
 public class BufferTable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
     @Column(name = "incommingData" ,  columnDefinition="TEXT")

@@ -1,0 +1,54 @@
+syntax = "proto2";
+
+package  com.redalliance.main.db.models.proto;
+
+option java_outer_classname = "MatchWrapper";
+
+//Date format dd/MM/yyyy
+message SubmittedMatch{
+    required InitInfo initInfo = 1;
+    required Pre pre = 2;
+    required PostActions post = 3;
+    repeated Action actions = 4;
+}
+
+message Pre{
+    required int32 id = 1;
+    required string startPos = 2;
+    required int32 loadedBall = 3;
+}
+
+message InitInfo{
+    required int32 id = 1;
+    required int32 teamNum = 2;
+    required int32 match = 3;
+    required string alliance = 4;
+    required int32 pos = 5;
+    required string event = 6;
+    required string timeStamp = 7;
+    required int32 numReplayed = 8;
+    required int32 scoutTeamNum = 9;
+    required string scoutName = 10;
+    optional string scoutUUID = 11;
+}
+
+message PostActions{
+    required int32 id = 1;
+    required int32 hangStart = 2;
+    required int32 hangEnd = 3;
+    required int32 hangLoc = 4;
+    required int32 balanceTime = 5;
+    required bool balanced = 6;
+    required bool buddyBot = 7;
+    required bool gotHangAssist = 8;
+    optional string comment = 9;
+    required bool isParked = 10;
+}
+
+message Action{
+    required int32 id = 1;
+    required int32 time = 2;
+    required string action = 3;
+    required string location = 4;
+    required bool isAuto = 5;
+}

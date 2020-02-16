@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="f6e7f203-ceed-4e31-b022-3b04d60dc1ee" name="scouting.runnymederobotics.com(aws)" url="http://scouting.runnymederobotics.com">
+        <fileTransfer host="scouting.runnymederobotics.com" port="22" privateKey="C:\Users\simar\Downloads\runnymederobotics.ppk" rootFolder="/home/bitnami" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
