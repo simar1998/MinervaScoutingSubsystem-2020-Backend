@@ -38,4 +38,28 @@ public class Pre implements ProtoInjest{
     public Message toProtoMessage() {
         return MatchWrapper.Pre.newBuilder().setId(this.id).setLoadedBall(this.loadedBall).setStartPos(this.startPos).build();
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getStartPos() {
+        return startPos;
+    }
+
+    public void setStartPos(String startPos) {
+        this.startPos = startPos;
+    }
+
+    public int getLoadedBall() {
+        return loadedBall;
+    }
+
+    public void setLoadedBall(int loadedBall) {
+        this.loadedBall = loadedBall;
+    }
 }

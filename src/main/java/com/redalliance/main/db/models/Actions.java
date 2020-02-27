@@ -47,4 +47,44 @@ public class Actions implements ProtoInjest{
         return MatchWrapper.Action.newBuilder().setId(this.id).setAction(this.action)
                 .setIsAuto(this.auto).setLocation(this.location).setTime(this.time).build();
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public boolean isAuto() {
+        return auto;
+    }
+
+    public void setAuto(boolean auto) {
+        this.auto = auto;
+    }
 }

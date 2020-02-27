@@ -43,6 +43,9 @@ public class PostActions implements ProtoInjest{
     @Column(name = "isParked")
     boolean isParked;
 
+    @Column(name = "wasBotDefended")
+    boolean wasBotDefended;
+
     @Override
     public void fromProtoMessage(Message message) {
         MatchWrapper.PostActions postActions = (MatchWrapper.PostActions) message;
@@ -67,4 +70,83 @@ public class PostActions implements ProtoInjest{
                 setComment(this.comment).setIsParked(this.isParked).build();
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getHangStart() {
+        return hangStart;
+    }
+
+    public void setHangStart(int hangStart) {
+        this.hangStart = hangStart;
+    }
+
+    public int getHangEnd() {
+        return hangEnd;
+    }
+
+    public void setHangEnd(int hangEnd) {
+        this.hangEnd = hangEnd;
+    }
+
+    public int getHangLoc() {
+        return hangLoc;
+    }
+
+    public void setHangLoc(int hangLoc) {
+        this.hangLoc = hangLoc;
+    }
+
+    public int getBalanceTime() {
+        return balanceTime;
+    }
+
+    public void setBalanceTime(int balanceTime) {
+        this.balanceTime = balanceTime;
+    }
+
+    public boolean isBalanced() {
+        return isBalanced;
+    }
+
+    public void setBalanced(boolean balanced) {
+        isBalanced = balanced;
+    }
+
+    public boolean isGotClimbAssistance() {
+        return gotClimbAssistance;
+    }
+
+    public void setGotClimbAssistance(boolean gotClimbAssistance) {
+        this.gotClimbAssistance = gotClimbAssistance;
+    }
+
+    public boolean isBuddyBot() {
+        return buddyBot;
+    }
+
+    public void setBuddyBot(boolean buddyBot) {
+        this.buddyBot = buddyBot;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public boolean isParked() {
+        return isParked;
+    }
+
+    public void setParked(boolean parked) {
+        isParked = parked;
+    }
 }

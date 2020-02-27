@@ -16,7 +16,7 @@ import java.io.IOException;
 public class MatchDataAPI {
 
     @POST
-    @Path("/submittedInfoWrapper")
+    @Path("/submittedInfoWrapperProto")
     public Response processSubmittedInfo(MultipartFormDataInput multipartFormDataInput) throws IOException {
 
         String dataToBeParsed = multipartFormDataInput.getFormDataPart("data", String.class,null);
@@ -30,5 +30,17 @@ public class MatchDataAPI {
         }
 
         return Response.ok("Submitted info wrapper object added into database for processing").build();
+    }
+
+
+    @POST
+    @Path("/submittedInfoWrapperJSON")
+    public Response processSubmittedInfoJson(MultipartFormDataInput multipartFormDataInput) throws IOException{
+
+        String jsonString = multipartFormDataInput.getFormDataPart("json",String.class,null);
+
+        SubmittedInfoWrapper.processIncommingString(jsonString);
+
+        return Response.ok("match submitted").build();
     }
 }

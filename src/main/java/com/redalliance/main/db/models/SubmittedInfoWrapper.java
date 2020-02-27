@@ -6,6 +6,7 @@ import com.redalliance.main.db.hibernate.HibernateThreadManager;
 import com.redalliance.main.db.models.proto.MatchWrapper;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -78,14 +79,29 @@ public class SubmittedInfoWrapper {
 
     public static void processIncommingString(SubmittedInfoWrapper submittedInfoWrapper){
         Session session = HibernateThreadManager.getHibernateThread(submittedInfoWrapper.getSubmittedGame().getTeamNum()).getSessionFactory().openSession();
-        Transaction transaction = session.beginTransaction();
         session.save(submittedInfoWrapper.getSubmittedGame());
-        session.save(submittedInfoWrapper.getPre());
-        for (Actions action : submittedInfoWrapper.getActions()){
-            session.save(action);
+        session.close();
+        session = HibernateThreadManager.getHibernateThread(submittedInfoWrapper.getSubmittedGame().getTeamNum()).getSessionFactory().openSession();
+        Query query = session.createQuery("from SubmittedGame where match = :match and team = :teamNum");
+        query.setParameter("match",submittedInfoWrapper.getSubmittedGame().getMatch());
+        query.setParameter("teamNum",submittedInfoWrapper.getSubmittedGame().getTeamNum());
+        ArrayList<SubmittedGame> submittedGames = (ArrayList<SubmittedGame>) query.list();
+        if (submittedGames.size() > 1){
+            throw new RuntimeException("More then one match found with same team and match number for event");
         }
+        SubmittedGame submittedGame = submittedGames.get(submittedGames.size()-1);
+        session = HibernateThreadManager.getHibernateThread(submittedInfoWrapper.getSubmittedGame().getTeamNum()).getSessionFactory().openSession();
+        submittedInfoWrapper.getPre().setId(submittedGame.getId());
+        session.save(submittedInfoWrapper.getPre());
+        session.close();
+        for (Actions action : submittedInfoWrapper.getActions()){
+            session = HibernateThreadManager.getHibernateThread(submittedInfoWrapper.getSubmittedGame().getTeamNum()).getSessionFactory().openSession();
+            action.setId(submittedGame.getId());
+            session.save(action);
+            session.close();
+        }
+        session = HibernateThreadManager.getHibernateThread(submittedInfoWrapper.getSubmittedGame().getTeamNum()).getSessionFactory().openSession();
         session.save(submittedInfoWrapper.getPostActions());
-        transaction.commit();
         session.close();
     }
 
