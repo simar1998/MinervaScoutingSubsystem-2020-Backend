@@ -18,15 +18,15 @@ public class HibernateThreadManager {
         team1.initHibernateThread();
         hibernateThreads.add(team1);
 
-        HibernateThread team2 = new HibernateThread("jdbc:mysql://localhost:3306/team2?useSSL=false",CONST.USER_NAME,CONST.PASSWORD,"1334");
-        team2.buildSessionFactory();
-        team2.initHibernateThread();
-        hibernateThreads.add(team2);
-
-        HibernateThread other = new HibernateThread("jdbc:mysql://localhost:3306/otherTeams?useSSL=false",CONST.USER_NAME,CONST.PASSWORD,"other");
-        other.buildSessionFactory();
-        other.initHibernateThread();
-        hibernateThreads.add(other);
+//        HibernateThread team2 = new HibernateThread("jdbc:mysql://localhost:3306/team2?useSSL=false",CONST.USER_NAME,CONST.PASSWORD,"1334");
+//        team2.buildSessionFactory();
+//        team2.initHibernateThread();
+//        hibernateThreads.add(team2);
+//
+//        HibernateThread other = new HibernateThread("jdbc:mysql://localhost:3306/otherTeams?useSSL=false",CONST.USER_NAME,CONST.PASSWORD,"other");
+//        other.buildSessionFactory();
+//        other.initHibernateThread();
+//        hibernateThreads.add(other);
     }
 
 

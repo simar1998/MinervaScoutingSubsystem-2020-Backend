@@ -27,8 +27,8 @@ public class HibernateThread implements Runnable {
     public static Configuration configuration;
 
     private  String dbString = "jdbc:mysql://localhost:3306/minerva?useSSL=false";
-    private  String userName = "cloud_engine";
-    private  String password = "mechsoljavaapp123";
+    private  String userName = "newuser";
+    private  String password = "password";
     private  String team = "1310";
 
     public static ArrayList<Class> managedEntities = new ArrayList<>();
@@ -101,7 +101,7 @@ public class HibernateThread implements Runnable {
                     .setProperty("hibernate.connection.username", userName)
                     .setProperty("hibernate.connection.password", password)
                     .setProperty("hibernate.show_sql", "true")
-                   // .setProperty("hibernate.dialect","org.hibernate.dialect.MySQL5Dialect")
+                    .setProperty("hibernate.dialect","org.hibernate.dialect.MySQL5InnoDBDialect")
                     .setProperty("hibernate.hbm2ddl.auto", "update");
 
             if (ApplicationServletContextListener.TEST_MODE) {

@@ -26,7 +26,7 @@ public class SubmittedGame implements ProtoInjest{
     @Column(name = "teamNum")
     int teamNum;
 
-    @Column(name = "match")
+    @Column(name = "matchNum")
     int match;
 
     @Column(name = "scoutTeamNum")

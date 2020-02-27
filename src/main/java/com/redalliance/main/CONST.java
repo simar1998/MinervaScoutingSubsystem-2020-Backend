@@ -8,6 +8,6 @@ public class CONST {
 
     public   static final String DB_STRING = "jdbc:mysql://localhost:3306/minerva?useSSL=false";
     public  static final String DRIVER_STRING =  "com.mysql.cj.jdbc.Driver";
-    public  static final String USER_NAME = "minervaDB";
-    public  static final String PASSWORD = "wegotemchamps2020";
+    public  static final String USER_NAME = "newuser";
+    public  static final String PASSWORD = "password";
 }
