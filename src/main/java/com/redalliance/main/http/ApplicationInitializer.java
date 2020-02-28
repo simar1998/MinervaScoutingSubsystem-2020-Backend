@@ -16,6 +16,7 @@ public class ApplicationInitializer extends Application {
     public Set<Class<?>> getClasses() {
         Set<Class<?>> set = new HashSet<>();
         set.add(TestAPI.class);
+        set.add(MatchDataAPI.class);
         return set;
     }
 }
