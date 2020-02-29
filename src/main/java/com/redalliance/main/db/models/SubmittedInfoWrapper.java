@@ -2,6 +2,7 @@ package com.redalliance.main.db.models;
 
 import com.google.gson.Gson;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.redalliance.main.db.hibernate.HibernateThread;
 import com.redalliance.main.db.hibernate.HibernateThreadManager;
 import com.redalliance.main.db.models.proto.MatchWrapper;
 import org.hibernate.Session;
@@ -12,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.UUID;
 
 /**
  * @author Simar Pal Kalsi
@@ -21,16 +23,16 @@ public class SubmittedInfoWrapper {
 
     private static Gson gson = new Gson();
 
-    @OneToOne()
+
     SubmittedGame submittedGame;
 
-    @OneToOne()
+
     Pre pre;
 
-    @OneToOne()
+
     PostActions postActions;
 
-    @OneToMany()
+
     ArrayList<Actions> actions;
 
     public static Gson getGson() {
@@ -78,31 +80,71 @@ public class SubmittedInfoWrapper {
     }
 
     public static void processIncommingString(SubmittedInfoWrapper submittedInfoWrapper){
-        Session session = HibernateThreadManager.getHibernateThread(submittedInfoWrapper.getSubmittedGame().getTeamNum()).getSessionFactory().openSession();
-        session.save(submittedInfoWrapper.getSubmittedGame());
-        session.close();
-        session = HibernateThreadManager.getHibernateThread(submittedInfoWrapper.getSubmittedGame().getTeamNum()).getSessionFactory().openSession();
-        Query query = session.createQuery("from SubmittedGame where match = :match and team = :teamNum");
-        query.setParameter("match",submittedInfoWrapper.getSubmittedGame().getMatch());
-        query.setParameter("teamNum",submittedInfoWrapper.getSubmittedGame().getTeamNum());
-        ArrayList<SubmittedGame> submittedGames = (ArrayList<SubmittedGame>) query.list();
-        if (submittedGames.size() > 1){
-            throw new RuntimeException("More then one match found with same team and match number for event");
-        }
-        SubmittedGame submittedGame = submittedGames.get(submittedGames.size()-1);
-        session = HibernateThreadManager.getHibernateThread(submittedInfoWrapper.getSubmittedGame().getTeamNum()).getSessionFactory().openSession();
-        submittedInfoWrapper.getPre().setId(submittedGame.getId());
-        session.save(submittedInfoWrapper.getPre());
-        session.close();
-        for (Actions action : submittedInfoWrapper.getActions()){
-            session = HibernateThreadManager.getHibernateThread(submittedInfoWrapper.getSubmittedGame().getTeamNum()).getSessionFactory().openSession();
-            action.setId(submittedGame.getId());
-            session.save(action);
+        try {
+
+
+            HibernateThread hibernateThread = HibernateThreadManager.getHibernateThread(1310);
+            String uuid = UUID.randomUUID().toString();
+            if (submittedInfoWrapper.getSubmittedGame().getSubmissionUUID() == null){
+                submittedInfoWrapper.getSubmittedGame().setSubmissionUUID(uuid);
+            }
+            Session session = hibernateThread.getSessionFactory().openSession();
+            Transaction transaction = session.beginTransaction();
+            Query query = session.createQuery("from SubmittedGame where teamNum = :teamNum and  matchNum = :matchNum and event = :event");
+            query.setParameter("teamNum",submittedInfoWrapper.getSubmittedGame().getTeamNum());
+            query.setParameter("matchNum",submittedInfoWrapper.getSubmittedGame().getMatchNum());
+            query.setParameter("event",submittedInfoWrapper.getSubmittedGame().getEvent());
+            try{
+                if (query.list().size() != 0){
+                    transaction.commit();
+                    session.close();
+                    throw new RuntimeException("Match " + submittedInfoWrapper.getSubmittedGame().getMatchNum() + "for team " + submittedInfoWrapper
+                    .getSubmittedGame().getTeamNum() + " in even " + submittedInfoWrapper.getSubmittedGame().getEvent() + " is already submitted");
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            transaction.commit();
             session.close();
+
+            session = hibernateThread.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            session.save(submittedInfoWrapper.getSubmittedGame());
+            transaction.commit();
+            session.close();
+
+            session = hibernateThread.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            query = session.createQuery("from SubmittedGame where submissionUUID = :uuid ");
+            query.setParameter("uuid", uuid);
+            ArrayList<SubmittedGame> submittedGames = (ArrayList<SubmittedGame>) query.list();
+            submittedInfoWrapper.getSubmittedGame().setId(submittedGames.get(0).getId());
+            transaction.commit();
+            session.close();
+
+            session = hibernateThread.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            submittedInfoWrapper.getPre().setId2(submittedInfoWrapper.getSubmittedGame().getId());
+            session.save(submittedInfoWrapper.getPre());
+            transaction.commit();
+            session.close();
+            for (Actions action : submittedInfoWrapper.getActions()) {
+                session = hibernateThread.getSessionFactory().openSession();
+                transaction = session.beginTransaction();
+                action.setId2(submittedInfoWrapper.getSubmittedGame().getId());
+                session.save(action);
+                transaction.commit();
+                session.close();
+            }
+            session = hibernateThread.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            submittedInfoWrapper.getPostActions().setId2(submittedInfoWrapper.getSubmittedGame().getId());
+            session.save(submittedInfoWrapper.getPostActions());
+            transaction.commit();
+            session.close();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        session = HibernateThreadManager.getHibernateThread(submittedInfoWrapper.getSubmittedGame().getTeamNum()).getSessionFactory().openSession();
-        session.save(submittedInfoWrapper.getPostActions());
-        session.close();
     }
 
     public static void processProtoString(String protoString){

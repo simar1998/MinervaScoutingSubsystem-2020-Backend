@@ -4,32 +4,27 @@ import com.google.protobuf.Message;
 import com.redalliance.main.db.models.proto.MatchWrapper;
 
 import javax.persistence.*;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * @author Simar Pal Kalsi
  * Live Long And Prosper -----> Simt'pal
  **/
-@Entity()
-@Table(name = "submittedGame")
+@Entity
+@Table(name = "SubmittedGame")
 public class SubmittedGame implements ProtoInjest{
 
-    public transient DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
     @Column(name = "teamNum")
     int teamNum;
 
     @Column(name = "matchNum")
-    int match;
+    int matchNum;
 
-    @Column(name = "scoutTeamNum")
+    @Column(name = "scoutTeam")
     int scoutTeamNum;
 
     @Column(name = "scoutName")
@@ -39,7 +34,7 @@ public class SubmittedGame implements ProtoInjest{
     String scoutUUID;
 
     @Column(name = "alliance")
-    char alliance;
+    String alliance;
 
     @Column(name = "pos")
     int pos;    
@@ -48,10 +43,13 @@ public class SubmittedGame implements ProtoInjest{
     String event;
 
     @Column(name = "timeStamp")
-    Date timeStamp;
+    String timeStamp;
 
-    @Column(name = "isReplayed" , columnDefinition = "int default 0")
-    int numReplayed = 0;
+    @Column(name = "isReplayed")
+    int numReplayed;
+
+    @Column(name = "submissionUUID")
+    String submissionUUID;
 
 
     @Override
@@ -59,16 +57,11 @@ public class SubmittedGame implements ProtoInjest{
         MatchWrapper.InitInfo submittedMatch = (MatchWrapper.InitInfo) message;
         this.id = submittedMatch.getId();
         this.teamNum = submittedMatch.getTeamNum();
-        this.match = submittedMatch.getMatch();
-        this.alliance = submittedMatch.getAlliance().toCharArray()[0];
+        this.matchNum = submittedMatch.getMatch();
+        this.alliance = submittedMatch.getAlliance();
         this.pos = submittedMatch.getPos();
         this.event = submittedMatch.getEvent();
-        try {
-            this.timeStamp = dateFormat.parse(submittedMatch.getTimeStamp());
-        } catch (ParseException e) {
-            this.timeStamp = null;
-            e.printStackTrace();
-        }
+        this.timeStamp = submittedMatch.getTimeStamp();
         this.numReplayed = submittedMatch.getNumReplayed();
         this.scoutName = submittedMatch.getScoutName();
         this.scoutTeamNum = submittedMatch.getScoutTeamNum();
@@ -84,24 +77,18 @@ public class SubmittedGame implements ProtoInjest{
     @Override
     public Message toProtoMessage() {
         if (this.scoutUUID == null) {
-            return MatchWrapper.InitInfo.newBuilder().setId(this.id).setTeamNum(this.teamNum).setMatch(this.match).setAlliance(this.alliance + "")
-                    .setPos(this.pos).setEvent(this.event).setTimeStamp(dateFormat.format(this.timeStamp)).setNumReplayed(this.numReplayed)
+            return MatchWrapper.InitInfo.newBuilder().setId(this.id).setTeamNum(this.teamNum).setMatch(this.matchNum).setAlliance(this.alliance + "")
+                    .setPos(this.pos).setEvent(this.event).setTimeStamp(this.timeStamp).setNumReplayed(this.numReplayed)
                     .setScoutName(this.scoutName).setScoutTeamNum(this.teamNum).build();
         }
         else {
-            return MatchWrapper.InitInfo.newBuilder().setId(this.id).setTeamNum(this.teamNum).setMatch(this.match).setAlliance(this.alliance + "")
-                    .setPos(this.pos).setEvent(this.event).setTimeStamp(dateFormat.format(this.timeStamp)).setNumReplayed(this.numReplayed)
+            return MatchWrapper.InitInfo.newBuilder().setId(this.id).setTeamNum(this.teamNum).setMatch(this.matchNum).setAlliance(this.alliance + "")
+                    .setPos(this.pos).setEvent(this.event).setTimeStamp(this.timeStamp).setNumReplayed(this.numReplayed)
                     .setScoutName(this.scoutName).setScoutTeamNum(this.teamNum).setScoutUUID(this.scoutUUID).build();
         }
     }
 
-    public DateFormat getDateFormat() {
-        return dateFormat;
-    }
 
-    public void setDateFormat(DateFormat dateFormat) {
-        this.dateFormat = dateFormat;
-    }
 
     public int getId() {
         return id;
@@ -119,12 +106,12 @@ public class SubmittedGame implements ProtoInjest{
         this.teamNum = teamNum;
     }
 
-    public int getMatch() {
-        return match;
+    public int getMatchNum() {
+        return matchNum;
     }
 
-    public void setMatch(int match) {
-        this.match = match;
+    public void setMatchNum(int matchNum) {
+        this.matchNum = matchNum;
     }
 
     public int getScoutTeamNum() {
@@ -151,11 +138,11 @@ public class SubmittedGame implements ProtoInjest{
         this.scoutUUID = scoutUUID;
     }
 
-    public char getAlliance() {
+    public String getAlliance() {
         return alliance;
     }
 
-    public void setAlliance(char alliance) {
+    public void setAlliance(String alliance) {
         this.alliance = alliance;
     }
 
@@ -175,11 +162,11 @@ public class SubmittedGame implements ProtoInjest{
         this.event = event;
     }
 
-    public Date getTimeStamp() {
+    public String getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(Date timeStamp) {
+    public void setTimeStamp(String timeStamp) {
         this.timeStamp = timeStamp;
     }
 
@@ -189,5 +176,13 @@ public class SubmittedGame implements ProtoInjest{
 
     public void setNumReplayed(int numReplayed) {
         this.numReplayed = numReplayed;
+    }
+
+    public String getSubmissionUUID() {
+        return submissionUUID;
+    }
+
+    public void setSubmissionUUID(String submissionUUID) {
+        this.submissionUUID = submissionUUID;
     }
 }

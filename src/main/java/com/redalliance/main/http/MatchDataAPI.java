@@ -3,8 +3,12 @@ package com.redalliance.main.http;
 import com.redalliance.main.db.models.SubmittedInfoWrapper;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 
@@ -43,4 +47,12 @@ public class MatchDataAPI {
 
         return Response.ok("match submitted").build();
     }
+
+    @GET
+    @Path("/get")
+    @Produces("text/plain")
+    public Response testGet(@Context Request request) {
+        return Response.ok("GET REQUEST SUCCESSFUL").build();
+    }
+
 }

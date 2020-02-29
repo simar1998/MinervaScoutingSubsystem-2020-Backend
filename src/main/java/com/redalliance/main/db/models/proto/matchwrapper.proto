@@ -21,7 +21,7 @@ message Pre{
 message InitInfo{
     required int32 id = 1;
     required int32 teamNum = 2;
-    required int32 match = 3;
+    required int32 matchNum = 3;
     required string alliance = 4;
     required int32 pos = 5;
     required string event = 6;

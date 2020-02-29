@@ -3,10 +3,7 @@ package com.redalliance.main.db.models;
 import com.google.protobuf.Message;
 import com.redalliance.main.db.models.proto.MatchWrapper;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author Simar Pal Kalsi
@@ -17,7 +14,11 @@ import javax.persistence.Table;
 public class Actions implements ProtoInjest{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+
+    @Column(name = "submittedGameID")
+    int id2;
 
     @Column(name = "time")
     int time;
@@ -46,6 +47,14 @@ public class Actions implements ProtoInjest{
     public Message toProtoMessage() {
         return MatchWrapper.Action.newBuilder().setId(this.id).setAction(this.action)
                 .setIsAuto(this.auto).setLocation(this.location).setTime(this.time).build();
+    }
+
+    public int getId2() {
+        return id2;
+    }
+
+    public void setId2(int id2) {
+        this.id2 = id2;
     }
 
     public int getId() {

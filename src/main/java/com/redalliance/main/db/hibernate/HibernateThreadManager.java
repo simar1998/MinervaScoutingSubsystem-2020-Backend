@@ -42,6 +42,7 @@ public class HibernateThreadManager {
     public static HibernateThread getHibernateThread(int teamNum){
         for (HibernateThread hibernateThread : hibernateThreads){
             if (hibernateThread.getTeam().contains(teamNum+"")){
+                System.out.println("team NUM " + hibernateThread.getTeam());
                 return hibernateThread;
             }
         }

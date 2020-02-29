@@ -1,6 +1,5 @@
 package com.redalliance.main;
 
-import com.redalliance.main.db.hibernate.HibernateThread;
 import com.redalliance.main.db.hibernate.HibernateThreadManager;
 import com.redalliance.main.db.subroutines.StateManager;
 import org.slf4j.Logger;

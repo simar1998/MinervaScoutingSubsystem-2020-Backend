@@ -14,7 +14,11 @@ import javax.persistence.*;
 public class PostActions implements ProtoInjest{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+
+    @Column(name = "submittedGameID")
+    int id2;
 
     @Column(name = "hangStart")
     int hangStart;
@@ -148,5 +152,21 @@ public class PostActions implements ProtoInjest{
 
     public void setParked(boolean parked) {
         isParked = parked;
+    }
+
+    public int getId2() {
+        return id2;
+    }
+
+    public void setId2(int id2) {
+        this.id2 = id2;
+    }
+
+    public boolean isWasBotDefended() {
+        return wasBotDefended;
+    }
+
+    public void setWasBotDefended(boolean wasBotDefended) {
+        this.wasBotDefended = wasBotDefended;
     }
 }
